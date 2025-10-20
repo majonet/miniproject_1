@@ -20,10 +20,8 @@ string get_last_name() {
     cin >> last_name;
     if (last_name.length() < 3 || last_name.length() > 20) {
             cout << "❌ last Name must be between 3 and 20 characters.\n\n";
-            return get_name();
+            return get_last_name();
         }
-
-        // Check all characters are alphabetic
         bool valid = true;
         for (char c : last_name) {
             if (!isalpha(c)) {
@@ -34,7 +32,7 @@ string get_last_name() {
 
         if (!valid) {
             cout << "❌last Name must contain only letters (A–Z).\n\n";
-            return get_name();
+            return get_last_name();
         }
 
         cout << "✅ Name accepted!\n\n";
@@ -48,8 +46,6 @@ string get_name() {
             cout << "❌ Name must be between 3 and 20 characters.\n\n";
             return get_name();
         }
-
-        // Check all characters are alphabetic
         bool valid = true;
         for (char c : name) {
             if (!isalpha(c)) {
@@ -57,12 +53,10 @@ string get_name() {
                 break;
             }
         }
-
         if (!valid) {
             cout << "❌ Name must contain only letters (A–Z).\n\n";
             return get_name();
         }
-
         cout << "✅ Name accepted!\n\n";
         return name;
     }
@@ -92,29 +86,15 @@ struct MenuItem {
     double price;
 };
 vector<MenuItem> menu = {
-    {"Appetizer", "Mirza Ghasemi", 6.00},
-    {"Appetizer", "Kashk-e Bademjan", 5.50},
-    {"Food", "Chelo Kabab", 14.00},
-    {"Food", "Ghormeh Sabzi", 12.50},
-    {"Food", "Fesenjan", 13.00},
-    {"Drink", "Doogh", 2.00},
-    {"Drink", "Saffron Tea", 2.50},
-    {"Drink", "Pomegranate Juice", 3.50}
+    {"1_Appetizer", "Mirza Ghasemi", 6.00},
+    {"2_Appetizer", "Kashk-e Bademjan", 5.50},
+    {"3_Food", "Chelo Kabab", 14.00},
+    {"4_Food", "Ghormeh Sabzi", 12.50},
+    {"5_Food", "Fesenjan", 13.00},
+    {"6_Drink", "Doogh", 2.00},
+    {"7_Drink", "Saffron Tea", 2.50},
+    {"8_Drink", "Pomegranate Juice", 3.50}
 };
-void showMenuOptions() {
-    cout << "=========================================\n";
-    cout << " 🍽️  Welcome to My Restaurant 🍹\n";
-    cout << "=========================================\n";
-    cout << " 1️⃣  Show Menu\n";
-    cout << " 2️⃣  New Order\n";
-    cout << " 3️⃣  Change Order\n";
-    cout << " 4️⃣  Order Delivered\n";
-    cout << " 5️⃣  Cancel Order\n";
-    cout << " 0️⃣  Exit\n";
-    cout << "-----------------------------------------\n";
-    cout << "👉 Please enter your choice (0-5): ";
-}
-
 void sleep2seconds() {
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
@@ -134,6 +114,65 @@ void showMenu(vector<MenuItem> menu) {
     sleep2seconds();
     cout << "===========================================\n\n";
 }
+vector<string> get_order() {
+    cout << "🍽️  Garson is here! What do you need? 🍹\n\n";
+    showMenu(menu);
+    vector<string> selected_items;
+    int choice=-1;
+    cout << "👉 Enter the item number(s) you want (1–8). Enter 0 when done.\n\n";
+    cout << "Enter item number (0 to finish): ";
+    
+    while (choice!=0)
+    {
+    cin >> choice;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "❌ Invalid input! Please enter a number.\n";
+        continue;
+    }
+    if (choice < 0 || choice > menu.size()) {
+        cout << "⚠️ Invalid choice! Please select a valid item number.\n";
+        continue;
+    }
+    selected_items.push_back(menu[choice - 1].name);
+    cout << "✅ Added \"" << menu[choice - 1].name << "\" to your order.\n";
+    if (selected_items.empty()) {
+        cout << "❌ You didn’t select any items! Please choose something next time.\n";
+        continue;
+    } 
+    else {
+        cout << "\n🧾 Your order summary:\n";
+        for (const auto& item : selected_items) {
+            cout << " • " << item << endl;
+        }
+        continue;
+    }
+    // if (choice == 0) {
+        
+    //     return selected_items;
+        
+    // }
+   }
+   cout << "\n🍴 Thank you! Your order has been placed.\n";
+   return selected_items;
+}
+
+void showMenuOptions() {
+    cout << "=========================================\n";
+    cout << " 🍽️  Welcome to My Restaurant 🍹\n";
+    cout << "=========================================\n";
+    cout << " 1️⃣  Show Menu\n";
+    cout << " 2️⃣  New Order\n";
+    cout << " 3️⃣  Change Order\n";
+    cout << " 4️⃣  Order Delivered\n";
+    cout << " 5️⃣  Cancel Order\n";
+    cout << " 0️⃣  Exit\n";
+    cout << "-----------------------------------------\n";
+    cout << "👉 Please enter your choice (0-5): ";
+}
+
+
 
 
 int main() {
@@ -169,8 +208,12 @@ int main() {
                 int std_id=get_std_id();
                 string name= get_name();
                 string last_name=get_last_name();
-                cout << "🍽️  Garson is here! What do you need? 🍹\n\n";
-                // order();
+                vector v_order=get_order();
+                order(std_id,name,last_name,v_order);
+                cout << "Press Enter to return to the main page...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                cin.get();// get enter
+                system("cls");
                 break;}
             case 3:
                 cout << "✏️ Changing your order...\n\n";
