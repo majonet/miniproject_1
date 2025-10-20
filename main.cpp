@@ -14,12 +14,59 @@ LinkedList list1;
 void order(int std_num,string name,string last_name,vector<string> items){
         list1.addorder(std_num,name,last_name,items);
     }
+string get_last_name() {
+    string last_name;
+    cout << "Please enter your last_name (3–20 letters): ";
+    cin >> last_name;
+    if (last_name.length() < 3 || last_name.length() > 20) {
+            cout << "❌ last Name must be between 3 and 20 characters.\n\n";
+            return get_name();
+        }
+
+        // Check all characters are alphabetic
+        bool valid = true;
+        for (char c : last_name) {
+            if (!isalpha(c)) {
+                valid = false;
+                break;
+            }
+        }
+
+        if (!valid) {
+            cout << "❌last Name must contain only letters (A–Z).\n\n";
+            return get_name();
+        }
+
+        cout << "✅ Name accepted!\n\n";
+        return last_name;
+    }
 string get_name() {
     string name;
     cout << "Please enter your name (3–20 letters): ";
     cin >> name;
-    
-}
+    if (name.length() < 3 || name.length() > 20) {
+            cout << "❌ Name must be between 3 and 20 characters.\n\n";
+            return get_name();
+        }
+
+        // Check all characters are alphabetic
+        bool valid = true;
+        for (char c : name) {
+            if (!isalpha(c)) {
+                valid = false;
+                break;
+            }
+        }
+
+        if (!valid) {
+            cout << "❌ Name must contain only letters (A–Z).\n\n";
+            return get_name();
+        }
+
+        cout << "✅ Name accepted!\n\n";
+        return name;
+    }
+
 int get_std_id(){
     cout << "Please enter your student ID: (your student ID should be 4 valid digit)  ";
     int st_num=0;
@@ -110,21 +157,21 @@ int main() {
         cout << endl;
 
         switch (choice) {
-            case 1:
+            case 1:{
                 cout << "📜 Showing the menu...\n\n";
                 showMenu(menu);
                 cout << "Press Enter to return to the main page...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
                 cin.get();// get enter
                 system("cls");
-                break;
-            case 2:
+                break;}
+            case 2:{
                 int std_id=get_std_id();
-                cout << "what is your firs name ? \n\n";
-
+                string name= get_name();
+                string last_name=get_last_name();
                 cout << "🍽️  Garson is here! What do you need? 🍹\n\n";
                 // order();
-                break;
+                break;}
             case 3:
                 cout << "✏️ Changing your order...\n\n";
                 break;
