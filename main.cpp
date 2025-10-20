@@ -284,7 +284,7 @@ int main() {
                 curr=list1.search(order_count);
                 curr->data->Order_Delivered();
                 break;
-            case 5:
+            case 5:{
                 cout << "❌ Order canceled.\n\n";
                 cout << "inter order count \n";
                 int order_count;
@@ -302,15 +302,16 @@ int main() {
                         curr->~Node();
                     }
                     else{
-                        cout<<"ok no delete any thing;";
-                        
+                        cout<<"ok no delete";
+                        break;
+
                     }
                    }
                else{
                     cout<< "you cant delete, your order deliverd"<< endl;
                 }
 
-                break;
+                break;}
             case 0:
                 cout << "👋 Thank you for visiting! Goodbye!\n";
                 return 0;

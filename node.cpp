@@ -11,7 +11,7 @@ Node::Node(int std_num, string first_name, string last_name, vector<string> user
 Node::~Node() {
     int val;
     val=data->Order_Delivered();
-    if (val<60){
+    if (val>60){
             cout << "Node not change " << endl;
         }
     else{  
