@@ -60,7 +60,6 @@ string get_name() {
         cout << "✅ Name accepted!\n\n";
         return name;
     }
-
 int get_std_id(){
     cout << "Please enter your student ID: (your student ID should be 4 valid digit)  ";
     int st_num=0;
@@ -114,6 +113,45 @@ void showMenu(vector<MenuItem> menu) {
     sleep2seconds();
     cout << "===========================================\n\n";
 }
+vector<string> get_order_change() {
+    cout << "🍽️  Garson is here! What do you need? 🍹\n\n";
+    showMenu(menu);
+    vector<string> selected_items;
+    int choice=-1;
+    cout << "👉 Enter the item number(s) you want (1–8). Enter 0 when done.\n\n";
+    cout << "enter 0 for skip add item: ";
+    cin >> choice;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "❌ Invalid input! Please enter a number.\n";
+        return get_order_change();
+    }
+    if (choice < 0 || choice > menu.size()) {
+        cout << "⚠️ Invalid choice! Please select a valid item number.\n";
+        return get_order_change();
+    }
+    if (choice == 0) {
+    cout << "🍴 Order finished.\n";
+    selected_items.push_back("");
+    return selected_items;
+      }
+    selected_items.push_back(menu[choice - 1].name);
+    cout << "✅ Added \"" << menu[choice - 1].name << "\" to your order.\n";
+    // if (selected_items.empty()) {
+    //     cout << "❌ You didn’t select any items! Please choose something next time.\n";
+    //     return get_order_change();
+    // } 
+    // else {
+    //     cout << "\n🧾 Your change_order summary:\n";
+    //     for (const auto& item : selected_items) {
+    //         cout << " • " << item << endl;
+    //     return selected_items;}
+    // }
+
+   cout << "\n🍴 Thank you! Your order has been placed.\n";
+   return selected_items;
+}
 vector<string> get_order() {
     cout << "🍽️  Garson is here! What do you need? 🍹\n\n";
     showMenu(menu);
@@ -125,6 +163,11 @@ vector<string> get_order() {
     while (choice!=0)
     {
     cin >> choice;
+    if (choice == 0) {
+        cout << "\n🍴 Thank you! Your order has been placed.\n";       
+        return selected_items;
+        
+    }
     if (cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -148,11 +191,7 @@ vector<string> get_order() {
         }
         continue;
     }
-    // if (choice == 0) {
-        
-    //     return selected_items;
-        
-    // }
+
    }
    cout << "\n🍴 Thank you! Your order has been placed.\n";
    return selected_items;
@@ -208,21 +247,69 @@ int main() {
                 int std_id=get_std_id();
                 string name= get_name();
                 string last_name=get_last_name();
-                vector v_order=get_order();
+                vector<string> v_order=get_order();
                 order(std_id,name,last_name,v_order);
                 cout << "Press Enter to return to the main page...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
                 cin.get();// get enter
                 system("cls");
                 break;}
-            case 3:
+            case 3:{
                 cout << "✏️ Changing your order...\n\n";
-                break;
+                cout << "inter order count \n";
+                int order_count;
+                cin>>order_count;
+                Node* curr;
+                curr=list1.search(order_count);
+                int age_count;
+                age_count=curr->data->Order_Delivered();
+                if (age_count<60){
+                int idx_delete;
+                cout << "which one of order want to delete write number if you dont want remove set -1 \n";
+                cin >>idx_delete;
+                cout << "add ever you want \n";
+                vector<string> vchange_order=get_order_change();
+                curr->data->Change_Order(idx_delete,vchange_order[0]);
+                curr->data->Review();}
+                else{
+                    cout<< "you cant change your order"<< endl;
+                }
+                break;}
             case 4:
-                cout << "🚚 Your order has been delivered!\n\n";
+                cout << "🚚 check  delivered!\n\n";
+                cout << "inter order count \n";
+                int order_count;
+                cin>>order_count;
+                Node* curr;
+                curr=list1.search(order_count);
+                curr->data->Order_Delivered();
                 break;
             case 5:
                 cout << "❌ Order canceled.\n\n";
+                cout << "inter order count \n";
+                int order_count;
+                cin>>order_count;
+                Node* curr;
+                curr=list1.search(order_count);
+                int age_count;
+                age_count=curr->data->Order_Delivered();
+                if (age_count<60){
+                cout << "Are you shure you want to delete order? (yes/no) \n";
+                curr->data->Review();
+                string ans;
+                cin>> ans;
+                    if (ans=="yes"){
+                        curr->~Node();
+                    }
+                    else{
+                        cout<<"ok no delete any thing;";
+                        
+                    }
+                   }
+               else{
+                    cout<< "you cant delete, your order deliverd"<< endl;
+                }
+
                 break;
             case 0:
                 cout << "👋 Thank you for visiting! Goodbye!\n";

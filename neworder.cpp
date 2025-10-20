@@ -28,7 +28,7 @@ int neworder::Order_Delivered() {
         else{
             cout << "Your order is Delivered: time ago --> " << age - 60 << " seconds" << endl;
         }
-        return static_cast<int>(age);
+        return age;
              
     }
 neworder::~neworder()
