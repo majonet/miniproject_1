@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include "neworder.hpp"
+#include <fstream>
 using namespace std;
 using namespace std::chrono;
 int neworder::count = 0;
@@ -18,7 +19,24 @@ neworder::neworder(int std_num,string first_name,string last_name,vector<string>
     for (int i = 0; i < user_neworder.size(); i++)
         cout << user_neworder[i] << "--";
     cout << endl;
-
+////////////    ////////
+    ofstream file("orders.txt",ios::app);
+    if (!file.is_open()) {
+        cout << "❌ Could not open file for saving.\n";
+        return;
+    }
+    file << std_num << ","
+            << first_name << ","
+            << last_name << ","
+            << order_num << ",";
+    vector<string> items = user_neworder;
+    for (size_t i = 0; i < items.size(); ++i) {
+        file << items[i];
+        if (i != items.size() - 1) file << "|";
+    }
+    file << "\n";
+    file.close();
+    cout << "✅ Orders saved successfully.\n";
 }
 int neworder::Order_Delivered() {
         auto age = duration_cast<seconds>(steady_clock::now() - create_time).count();
@@ -40,7 +58,6 @@ neworder::~neworder()
     else {
         cout << "your order is cancelled successfully." << endl;
         user_neworder.clear();
-        count--;
     }
 }
 void neworder::Change_Order(int remove_index, string add_item) {

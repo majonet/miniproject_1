@@ -9,11 +9,44 @@
 #include <windows.h>
 #include <cstddef> 
 #include <iomanip>
+#include <fstream>
 // using namespace std;
 LinkedList list1;
 void order(int std_num,string name,string last_name,vector<string> items){
         list1.addorder(std_num,name,last_name,items);
     }
+void loadFromFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "⚠️ No saved file found.\n";
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string std_id_str, name, last_name, items_str;
+        getline(ss, std_id_str, ',');
+        getline(ss, name, ',');
+        getline(ss, last_name, ',');
+        getline(ss, items_str);
+
+        int std_id = stoi(std_id_str);
+        vector<string> items;
+        stringstream items_stream(items_str);
+        string item;
+        while (getline(items_stream, item, '|')) {
+            items.push_back(item);
+        }
+
+        order(std_id, name, last_name, items);
+    }
+
+    file.close();
+    cout << "✅ Orders loaded successfully.\n";
+}
+
+
 string get_last_name() {
     string last_name;
     cout << "Please enter your last_name (3–20 letters): ";
@@ -201,11 +234,13 @@ void showMenuOptions() {
     cout << "=========================================\n";
     cout << " 🍽️  Welcome to My Restaurant 🍹\n";
     cout << "=========================================\n";
+    cout << "📋 Main Menu\n";
     cout << " 1️⃣  Show Menu\n";
     cout << " 2️⃣  New Order\n";
     cout << " 3️⃣  Change Order\n";
     cout << " 4️⃣  Order Delivered\n";
     cout << " 5️⃣  Cancel Order\n";
+    cout << " 6️⃣  Show All Orders\n";
     cout << " 0️⃣  Exit\n";
     cout << "-----------------------------------------\n";
     cout << "👉 Please enter your choice (0-5): ";
@@ -304,14 +339,15 @@ int main() {
                     else{
                         cout<<"ok no delete";
                         break;
-
                     }
                    }
                else{
                     cout<< "you cant delete, your order deliverd"<< endl;
                 }
-
                 break;}
+            case 6:
+                list1.printall();  
+                break;
             case 0:
                 cout << "👋 Thank you for visiting! Goodbye!\n";
                 return 0;

@@ -1,7 +1,7 @@
 #include "linklist.hpp"
 #include <iostream>
 using namespace std;
-
+#include <fstream>
 int LinkedList::counter = 0;
 
 LinkedList::LinkedList() : id(++counter) {
@@ -69,4 +69,3 @@ void LinkedList::printall() const {
 
     cout << "--------------------------------\n";
 }
-

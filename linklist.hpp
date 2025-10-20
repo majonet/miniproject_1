@@ -13,4 +13,5 @@ public:
     void addorder(int std_num,string first_name,string last_name,vector<string> user_neworder);
     void printall() const;
     Node* search(int se);
+    void saveToFile(const string& filename);
 };
